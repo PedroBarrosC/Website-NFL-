@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
-<body onload="listar()">
+<body>
   <!--header inicio-->
   <div class="header">
     <div class="container">
@@ -25,7 +25,7 @@
           <a href="index.html">Inicial</a>
         </li>
         <li>
-          <a href="simulador.html">Simulador</a>
+          <a href="questionario.html">questionario</a>
         </li>
         <li>|</li>
         <li>
@@ -53,10 +53,7 @@
                          Para inserir mais um campo, copie uma das inputs abaixo.
                          Assim que inserir vá para o script abaixo.
                      -->
-          <div class="campo">
-            <span>Código de ativação:</span>
-            <input id="codigo_input" type="text" placeholder="Insira aqui seu código" />
-          </div>
+
           <div class="campo">
             <span>Nome:</span>
             <input id="nome_input" type="text" placeholder="Seu nome" />
@@ -72,6 +69,46 @@
           <div class="campo">
             <span>Confirmação da Senha:</span>
             <input id="confirmacao_senha_input" type="password" placeholder="******" />
+          </div>
+          <div class="campo">
+            <span>Time favorito:</span>
+            <select id="time_input">
+              <option value="">Selecione um time</option>
+
+              <option value="Arizona Cardinals">Arizona Cardinals</option>
+              <option value="Atlanta Falcons">Atlanta Falcons</option>
+              <option value="Baltimore Ravens">Baltimore Ravens</option>
+              <option value="Buffalo Bills">Buffalo Bills</option>
+              <option value="Carolina Panthers">Carolina Panthers</option>
+              <option value="Chicago Bears">Chicago Bears</option>
+              <option value="Cincinnati Bengals">Cincinnati Bengals</option>
+              <option value="Cleveland Browns">Cleveland Browns</option>
+              <option value="Dallas Cowboys">Dallas Cowboys</option>
+              <option value="Denver Broncos">Denver Broncos</option>
+              <option value="Detroit Lions">Detroit Lions</option>
+              <option value="Green Bay Packers">Green Bay Packers</option>
+              <option value="Houston Texans">Houston Texans</option>
+              <option value="Indianapolis Colts">Indianapolis Colts</option>
+              <option value="Jacksonville Jaguars">Jacksonville Jaguars</option>
+              <option value="Kansas City Chiefs">Kansas City Chiefs</option>
+              <option value="Las Vegas Raiders">Las Vegas Raiders</option>
+              <option value="Los Angeles Chargers">Los Angeles Chargers</option>
+              <option value="Los Angeles Rams">Los Angeles Rams</option>
+              <option value="Miami Dolphins">Miami Dolphins</option>
+              <option value="Minnesota Vikings">Minnesota Vikings</option>
+              <option value="New England Patriots">New England Patriots</option>
+              <option value="New Orleans Saints">New Orleans Saints</option>
+              <option value="New York Giants">New York Giants</option>
+              <option value="New York Jets">New York Jets</option>
+              <option value="Philadelphia Eagles">Philadelphia Eagles</option>
+              <option value="Pittsburgh Steelers">Pittsburgh Steelers</option>
+              <option value="San Francisco 49ers">San Francisco 49ers</option>
+              <option value="Seattle Seahawks">Seattle Seahawks</option>
+              <option value="Tampa Bay Buccaneers">Tampa Bay Buccaneers</option>
+              <option value="Tennessee Titans">Tennessee Titans</option>
+              <option value="Washington Commanders">Washington Commanders</option>
+
+            </select>
           </div>
           <button class="botao" onclick="cadastrar()">Cadastrar</button>
         </div>
@@ -99,9 +136,10 @@
 <script>
 
   // Array para armazenar empresas cadastradas para validação de código de ativação 
-  let listaEmpresasCadastradas = [];
+  
 
   function cadastrar() {
+    
     // aguardar();
 
     //Recupere o valor da nova input pelo nome do id
@@ -110,8 +148,9 @@
     var emailVar = email_input.value;
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
-    var codigoVar = codigo_input.value;
-    var idEmpresaVincular
+    var timeVar = time_input.value;
+    console.log("CLIQUEI NO BOTÃO1");
+
 
     // Verificando se há algum campo em branco
     if (
@@ -119,7 +158,8 @@
       emailVar == "" ||
       senhaVar == "" ||
       confirmacaoSenhaVar == "" ||
-      codigoVar == ""
+      timeVar == ""
+
     ) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
@@ -127,25 +167,16 @@
 
       finalizarAguardar();
       return false;
-    } else {
-      setInterval(sumirMensagem, 5000);
+    
     }
+    console.log("CLIQUEI NO BOTÃO2");
 
     // Verificando se o código de ativação é de alguma empresa cadastrada
-    for (let i = 0; i < listaEmpresasCadastradas.length; i++) {
-      if (listaEmpresasCadastradas[i].codigo_ativacao == codigoVar) {
-        idEmpresaVincular = listaEmpresasCadastradas[i].id
-        console.log("Código de ativação válido.");
-        break;
-      } else {
-        cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "(Mensagem de erro para código inválido)";
-        finalizarAguardar();
-      }
-    }
-
+    
+    
+console.log("VOU ENVIAR PRA API");
     // Enviando o valor da nova input
-    fetch("/usuarios/cadastrar", {
+    fetch("http://localhost:3333/usuarios/cadastrar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -153,10 +184,10 @@
       body: JSON.stringify({
         // crie um atributo que recebe o valor recuperado aqui
         // Agora vá para o arquivo routes/usuario.js
-        nomeServer: nomeVar,
+        nomeServer: nomeVar,  
         emailServer: emailVar,
         senhaServer: senhaVar,
-        idEmpresaVincularServer: idEmpresaVincular
+        timeServer: timeVar
       }),
     })
       .then(function (resposta) {
@@ -182,31 +213,10 @@
         console.log(`#ERRO: ${resposta}`);
         finalizarAguardar();
       });
-
+console.log("CLIQUEI NO BOTÃO3");
     return false;
   }
 
   // Listando empresas cadastradas 
-  function listar() {
-    fetch("/empresas/listar", {
-      method: "GET",
-    })
-      .then(function (resposta) {
-        resposta.json().then((empresas) => {
-          empresas.forEach((empresa) => {
-            listaEmpresasCadastradas.push(empresa);
 
-            console.log("listaEmpresasCadastradas")
-            console.log(listaEmpresasCadastradas[0].codigo_ativacao)
-          });
-        });
-      })
-      .catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
-      });
-  }
-
-  function sumirMensagem() {
-    cardErro.style.display = "none";
-  }
 </script>

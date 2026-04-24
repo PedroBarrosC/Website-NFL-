@@ -42,16 +42,17 @@ body {
 }
 
 .navbar {
-  width: 300px;
+  width: 423px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   list-style: none;
   color: red;
+  gap: 20px;
 }
 
 .titulo {
-  color: white;
+  color: blue;
   width: fit-content;
   font-weight: 500;
 }
@@ -176,8 +177,9 @@ body {
 
 .login {
   height: var(--tamanho-login);
-  background-image: url('../assets/imgs/bg-jelly-fish-para-home.png');
+  background-image: url('../assets/imgs/14h5v3o.png');
   background-size: cover;
+  background-position: center;
 }
 
 .login .container {
@@ -188,12 +190,12 @@ body {
 
 .card {
   width: 50%;
-  background-color: #e5e5e5;
+  background-color: white;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  color: palevioletred;
+  color: blue;
   flex-direction: column;
   height: fit-content;
   padding: 20px 0;
