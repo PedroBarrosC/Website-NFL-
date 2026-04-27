@@ -11,7 +11,7 @@
     <script src="./js/sessao.js"></script>
 
     <link rel="stylesheet" href="./css/estilo.css">
-    <link rel="icon" href="./assets/icon/favicon2.ico">
+    <link rel="icon" href="./assets/icon/OIP (1).jpg">
     <link rel="preconnect" href="https://fonts.gstatic.com">
 </head>
 
@@ -86,10 +86,15 @@
 
 <script>
 
-
+    var tentativas = [];
     function entrar() {
         aguardar();
 
+        tentativas.push(email_input.value);
+
+        for (let i = 0; i < tentativas.length; i++) {
+            console.log(`${tentativas[i]}`);
+        }
         var emailVar = email_input.value;
         var senhaVar = senha_input.value;
 
@@ -127,10 +132,10 @@
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.id;
-                    
+
 
                     setTimeout(function () {
-                        window.location = "./dashboard/cards.html";
+                        window.location = "./inicial.html";
                     }, 1000); // apenas para exibir o loading
 
                 });
