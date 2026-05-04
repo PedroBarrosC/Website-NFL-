@@ -29,6 +29,12 @@ app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/times", timeRouter);
 
+var quizRouter = require("./src/routes/quizRoutes");
+
+app.use("/quiz", quizRouter);
+
+
+;
 app.listen(PORTA_APP, function () {
     console.log(`
     ##   ##  ######   #####             ####       ##     ######     ##              ##  ##    ####    ######  

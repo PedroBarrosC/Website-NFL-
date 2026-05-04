@@ -75,35 +75,52 @@
 <script>
     const listaDeQuestoes = [
 
-        {
-            pergunta: "Qual mês tem 30 dias?",
-            alternativaA: "Janeiro",
-            alternativaB: "Dezembro",
-            alternativaC: "Junho",
-            alternativaD: "Agosto",
-            alternativaCorreta: "alternativaC"
-        },
+    {
+        pergunta: "Quantos jogadores cada time tem em campo no futebol americano?",
+        alternativaA: "7",
+        alternativaB: "9",
+        alternativaC: "11",
+        alternativaD: "13",
+        alternativaCorreta: "alternativaC"
+    },
 
-        {
-            pergunta: "Quantas horas tem em um dia?",
-            alternativaA: "30 horas",
-            alternativaB: "38 horas",
-            alternativaC: "48 horas",
-            alternativaD: "24 horas",
-            alternativaCorreta: "alternativaD"
-        },
+    {
+        pergunta: "Qual é o principal objetivo do jogo?",
+        alternativaA: "Chutar ao gol",
+        alternativaB: "Fazer touchdown",
+        alternativaC: "Fazer cesta",
+        alternativaD: "Acertar o adversário",
+        alternativaCorreta: "alternativaB"
+    },
 
-        {
-            pergunta: "Qual destes números é ímpar?",
-            alternativaA: "Dez",
-            alternativaB: "Doze",
-            alternativaC: "Oito",
-            alternativaD: "Onze",
-            alternativaCorreta: "alternativaD"
-        }
+    {
+        pergunta: "Quantos pontos vale um touchdown?",
+        alternativaA: "3",
+        alternativaB: "6",
+        alternativaC: "1",
+        alternativaD: "2",
+        alternativaCorreta: "alternativaB"
+    },
 
-    ]
+    {
+        pergunta: "Qual posição geralmente lança a bola?",
+        alternativaA: "Running Back",
+        alternativaB: "Wide Receiver",
+        alternativaC: "Quarterback",
+        alternativaD: "Linebacker",
+        alternativaCorreta: "alternativaC"
+    },
 
+    {
+        pergunta: "Como se chama quando o time é parado na própria end zone?",
+        alternativaA: "Touchdown",
+        alternativaB: "Field Goal",
+        alternativaC: "Safety",
+        alternativaD: "Fumble",
+        alternativaCorreta: "alternativaC"
+    }
+
+]
     // variáveis globais    
     let numeroDaQuestaoAtual = 0
     let pontuacaoFinal = 0
@@ -269,6 +286,8 @@
         else if (porcentagemFinalDeAcertos >= 0.9) {
             textoParaMensagemFinal = "Uau, parabéns!"
             classComCoresParaMensagemFinal = "text-success-with-bg"
+
+            salvarResultado()
         }
 
         textoParaMensagemFinal += "<br> Você acertou " + Math.round((porcentagemFinalDeAcertos)*100) + "% das questões."
@@ -286,4 +305,26 @@
         btnTentarNovamente.disabled = false
 
     }
+    function salvarResultado() {
+    const resultado = {
+        acertos: certas,
+        erros: erradas,
+        pontuacao: pontuacaoFinal
+    }
+
+    fetch("/quiz/salvar", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultado)
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("Resultado salvo:", data)
+    })
+    .catch(err => {
+        console.error("Erro ao salvar:", err)
+    })
+}
 </script>
