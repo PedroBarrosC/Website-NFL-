@@ -23,12 +23,12 @@
                 <li>
                     <a href="inicial.html">inicial <a>
                 </li>
-              
+
                 <li>|</li>
                 <li class="agora">
                     <a href="dashboard/dashboard.html">dashboard</a>
                 </li>
-                
+
             </ul>
         </div>
     </div>
@@ -330,41 +330,36 @@
         }
     }
 
-    function finalizarJogo() {
-        let textoParaMensagemFinal = null
-        let classComCoresParaMensagemFinal = null
-        const porcentagemFinalDeAcertos = pontuacaoFinal / quantidadeDeQuestoes
+function finalizarJogo() {
+    let textoParaMensagemFinal = null
+    let classComCoresParaMensagemFinal = null
+    const porcentagemFinalDeAcertos = pontuacaoFinal / quantidadeDeQuestoes
 
-        if (porcentagemFinalDeAcertos <= 0.3) {
-            textoParaMensagemFinal = "Parece que você não estudou..."
-            classComCoresParaMensagemFinal = "text-danger-with-bg"
-        }
-        else if (porcentagemFinalDeAcertos > 0.3 && porcentagemFinalDeAcertos < 0.9) {
-            textoParaMensagemFinal = "Pode melhorar na próxima, hein!"
-            classComCoresParaMensagemFinal = "text-warning-with-bg"
-        }
-        else if (porcentagemFinalDeAcertos >= 0.9) {
-            textoParaMensagemFinal = "Uau, parabéns!"
-            classComCoresParaMensagemFinal = "text-success-with-bg"
-
-            salvarResultado()
-        }
-
-        textoParaMensagemFinal += "<br> Você acertou " + Math.round((porcentagemFinalDeAcertos) * 100) + "% das questões."
-
-
-        document.getElementById('msgFinal').innerHTML = textoParaMensagemFinal
-        document.getElementById('msgFinal').classList.add(classComCoresParaMensagemFinal)
-        document.getElementById('spanPontuacaoFinal').innerHTML = pontuacaoFinal
-
-        document.getElementById('jogo').classList.add("text-new-gray")
-
-        btnProx.disabled = true
-        btnSubmeter.disabled = true
-        // btnConcluir.disabled = true
-        btnTentarNovamente.disabled = false
-
+    if (porcentagemFinalDeAcertos <= 0.3) {
+        textoParaMensagemFinal = "Parece que você não estudou..."
+        classComCoresParaMensagemFinal = "text-danger-with-bg"
     }
+    else if (porcentagemFinalDeAcertos > 0.3 && porcentagemFinalDeAcertos < 0.9) {
+        textoParaMensagemFinal = "Pode melhorar na próxima, hein!"
+        classComCoresParaMensagemFinal = "text-warning-with-bg"
+    }
+    else {
+        textoParaMensagemFinal = "Uau, parabéns!"
+        classComCoresParaMensagemFinal = "text-success-with-bg"
+    }
+
+    salvarResultado()
+
+    textoParaMensagemFinal += "<br> Você acertou " + Math.round((porcentagemFinalDeAcertos) * 100) + "% das questões."
+
+    document.getElementById('msgFinal').innerHTML = textoParaMensagemFinal
+    document.getElementById('msgFinal').classList.add(classComCoresParaMensagemFinal)
+    document.getElementById('spanPontuacaoFinal').innerHTML = pontuacaoFinal
+
+    btnProx.disabled = true
+    btnSubmeter.disabled = true
+    btnTentarNovamente.disabled = false
+}
     function salvarResultado() {
         const resultado = {
             acertos: certas,
@@ -373,6 +368,7 @@
         }
 
         fetch("/quiz/salvar", {
+
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -380,7 +376,8 @@
             body: JSON.stringify({
                 acertos: certas,
                 erros: erradas,
-                pontuacao: pontuacaoFinal
+                pontuacao: pontuacaoFinal,
+                idUsuario: sessionStorage.ID_USUARIO
             })
         })
             .then(res => res.json())
