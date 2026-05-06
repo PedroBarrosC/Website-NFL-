@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-      <link rel="icon" href="../assets/icon/OIP (1).jpg">
+    <link rel="icon" href="../assets/icon/OIP (1).jpg">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NFL | Dashboard</title>
@@ -56,106 +56,168 @@
     b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
 
     window.onload = function () {
-        carregarGraficoQuiz();
-        carregarGraficoTimes();
-    }
+        obterDadosQuiz();
+        obterDadosTimes();
+    };
 
-    function carregarGraficoQuiz() {
+
+    // ================= QUIZ =================
+
+    // 1. OBTER DADOS
+    function obterDadosQuiz() {
         fetch("/quiz/distribuicao")
             .then(res => res.json())
-            .then(dados => {
-
-                const labels = [];
-                const valores = [];
-
-                dados.forEach(item => {
-                    labels.push(item.pontuacao);
-                    valores.push(item.quantidade);
-                });
-
-                new Chart(document.getElementById("graficoQuiz"), {
-                    type: "line",
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: "Quantidade de usuários por pontuação",
-                            data: valores,
-                            borderColor: "#013369",
-                            backgroundColor: "rgba(1, 51, 105, 0.2)",
-                            fill: true,
-                            tension: 0.3
-                        }]
-                    },
-                    options: {
-                        plugins: {
-                            legend: {
-                                labels: {
-                                    color: "white"
-                                }
-                            }
-                        },
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: "Pontuação",
-                                    color: "white"
-                                },
-                                ticks: { color: "white" }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: "Quantidade de usuários",
-                                    color: "white"
-                                },
-                                ticks: { color: "white" },
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
+            .then(resposta => {
+                plotarGraficoQuiz(resposta);
             })
-            .catch(err => {
-                console.error(err);
-            });
+            .catch(err => console.error(err));
     }
 
-    function carregarGraficoTimes() {
+    // 2. PLOTAR
+    function plotarGraficoQuiz(resposta) {
+
+        let labels = [];
+        let dados = {
+            labels: labels,
+            datasets: [{
+                label: "Quantidade de usuários por pontuação",
+                data: [],
+                borderColor: "#013369",
+                backgroundColor: "rgba(1, 51, 105, 0.2)",
+                fill: true,
+                tension: 0.3
+            }]
+        };
+
+        resposta.forEach(item => {
+            labels.push(item.pontuacao);
+            dados.datasets[0].data.push(item.quantidade);
+        });
+
+        let myChart = new Chart(document.getElementById("graficoQuiz"), {
+            type: "line",
+            data: dados,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true, // começa do 0
+                        ticks: {
+                            stepSize: 1, // de 1 em 1 (1,2,3...)
+                            color: "white"
+                        },
+                        title: {
+                            display: true,
+                            text: "Quantidade de usuários",
+                            color: "white"
+                        }
+                    },
+                    x: {
+                        ticks: { color: "white" },
+                        title: {
+                            display: true,
+                            text: "Pontuação",
+                            color: "white"
+                        }
+                    }
+                }
+            }
+        });
+
+
+        setTimeout(() => atualizarGraficoQuiz(dados, myChart), 2000);
+    }
+
+    // 3. ATUALIZAR
+    function atualizarGraficoQuiz(dados, myChart) {
+
+        fetch("/quiz/distribuicao", { cache: 'no-store' })
+            .then(res => res.json())
+            .then(novoRegistro => {
+
+                dados.labels = [];
+                dados.datasets[0].data = [];
+
+                novoRegistro.forEach(item => {
+                    dados.labels.push(item.pontuacao);
+                    dados.datasets[0].data.push(item.quantidade);
+                });
+
+                myChart.update();
+
+                setTimeout(() => atualizarGraficoQuiz(dados, myChart), 2000);
+            })
+            .catch(err => console.error(err));
+    }
+
+
+
+    // ================= TIMES =================
+
+    // 1. OBTER DADOS
+    function obterDadosTimes() {
         fetch("/quiz/times-dados")
             .then(res => res.json())
-            .then(dados => {
-
-                console.log("TIMES:", dados);
-
-                if (!dados || dados.length == 0) return;
-
-                const labels = [];
-                const valores = [];
-
-                dados.forEach(item => {
-                    labels.push(item.nome_time);
-                    valores.push(item.quantidade);
-                });
-
-                new Chart(document.getElementById("graficoTimes"), {
-                    type: "pie",
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            data: valores,
-                            backgroundColor: [
-                                "#013369", // azul NFL
-                                "#d50a0a", // vermelho NFL
-                                "#ffffff",
-                                "#888888",
-                                "#00ffcc",
-                                "#ffaa00"
-                            ]
-                        }]
-                    }
-                });
+            .then(resposta => {
+                plotarGraficoTimes(resposta);
             })
             .catch(err => console.error("Erro times:", err));
+    }
+
+    // 2. PLOTAR
+    function plotarGraficoTimes(resposta) {
+
+        if (!resposta || resposta.length == 0) return;
+
+        let labels = [];
+        let dados = {
+            labels: labels,
+            datasets: [{
+                data: [],
+                backgroundColor: [
+                    "#013369",
+                    "#d50a0a",
+                    "#ffffff",
+                    "#888888",
+                    "#00ffcc",
+                    "#ffaa00"
+                ]
+            }]
+        };
+
+        resposta.forEach(item => {
+            labels.push(item.nome_time);
+            dados.datasets[0].data.push(item.quantidade);
+        });
+
+        let myChart = new Chart(document.getElementById("graficoTimes"), {
+            type: "pie",
+            data: dados
+        });
+
+        setTimeout(() => atualizarGraficoTimes(dados, myChart), 2000);
+    }
+
+    // 3. ATUALIZAR
+    function atualizarGraficoTimes(dados, myChart) {
+
+        fetch("/quiz/times-dados", { cache: 'no-store' })
+            .then(res => res.json())
+            .then(novoRegistro => {
+
+                if (!novoRegistro || novoRegistro.length == 0) return;
+
+                dados.labels = [];
+                dados.datasets[0].data = [];
+
+                novoRegistro.forEach(item => {
+                    dados.labels.push(item.nome_time);
+                    dados.datasets[0].data.push(item.quantidade);
+                });
+
+                myChart.update();
+
+                setTimeout(() => atualizarGraficoTimes(dados, myChart), 2000);
+            })
+            .catch(err => console.error("Erro ao atualizar times:", err));
     }
 </script>
