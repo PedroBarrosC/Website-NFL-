@@ -60,4 +60,13 @@ FROM resultados_quiz r
 JOIN usuario u ON r.fk_usuario = u.id;
 
 
+create view selects as
+SELECT usuario.nome, usuario.email, usuario.senha, times.nome_time as time_favorito
+FROM usuario
+JOIN times ON usuario.time_favorito = times.id_time; 
+
+
+select *  from resultados_quiz 
+
+
 
