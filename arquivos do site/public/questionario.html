@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
 </head>
 
-<body onload="onloadEsconder()">
+<body onload="iniciarQuiz()">
     <div class="header">
         <div class="container">
             <h1 class="titulo">NFL</h1>
@@ -39,9 +39,7 @@
 
         <div id="pontuacaoEJogo" class="flex-colunar align-center gap-16">
 
-            <button id="btnIniciarQuiz" class="btn-primary" onclick="iniciarQuiz()">
-                INICIAR QUIZ
-            </button>
+            
 
             <!-- PONTUAÇÃO -->
             <div id="pontuacao" class="flex-colunar width-fit-content border-primary padding-16 quiz-box">
@@ -61,62 +59,19 @@
 
             </div>
 
-            <div id="jogo" class="width-fit-content flex-colunar border-secondary padding-16 quiz-box">
+            <div id="quizContainer" class="quiz-container"></div>
 
-                <div id="infoQuestao" class="padding-8">
-                    <span>
-                        Questão <span id="spanNumeroDaQuestaoAtual"></span> de
-                        <span id="qtdQuestoes"></span>
-                    </span>
-                </div>
+            <div class="quiz-actions">
 
-                <div id="perguntaDaQuestaoAtual" class="padding-8 text-bold">
-                    <span id="spanQuestaoExibida"></span>
-                </div>
-
-                <div id="infoAlternativas" class="padding-8">
-                    <span><em>Escolha uma opção:</em></span>
-                </div>
-
-                <div id="opcoes" class="flex-colunar padding-8 quiz-opcoes">
-
-                    <span class="quiz-alternativa">
-                        <input type="radio" id="primeiraOpcao" name="option" value="alternativaA" />
-                        <label for="primeiraOpcao" id="labelOpcaoUm"></label>
-                    </span>
-
-                    <span class="quiz-alternativa">
-                        <input type="radio" id="segundaOpcao" name="option" value="alternativaB" />
-                        <label for="segundaOpcao" id="labelOpcaoDois"></label>
-                    </span>
-
-                    <span class="quiz-alternativa">
-                        <input type="radio" id="terceiraOpcao" name="option" value="alternativaC" />
-                        <label for="terceiraOpcao" id="labelOpcaoTres"></label>
-                    </span>
-
-                    <span class="quiz-alternativa">
-                        <input type="radio" id="quartaOpcao" name="option" value="alternativaD" />
-                        <label for="quartaOpcao" id="labelOpcaoQuatro"></label>
-                    </span>
-
-                </div>
-
-                <div id="botoes" class="flex-colunar padding-8 gap-8">
-                    <button onclick="submeter()" id="btnSubmeter" class="btn-primary">
-                        Submeter
-                    </button>
-
-                    <button onclick="avancar()" id="btnProx" class="btn-secondary" disabled>
-                        Próxima
-                    </button>
-
-                    <button onclick="tentarNovamente()" id="btnTentarNovamente" class="btn-secondary" disabled>
-                        Tentar novamente
-                    </button>
-                </div>
+                <button onclick="finalizarQuiz()" class="btn-primary" id="btnFinalizar" style="display: none;">
+                    FINALIZAR QUIZ
+                </button>
 
             </div>
+
+            <div id="resultadoQuiz"></div>
+
+
 
         </div>
 
@@ -134,6 +89,7 @@
 
 
 <script>
+
     const listaDeQuestoes = [
 
         {
@@ -182,190 +138,80 @@
         }
 
     ]
-    // variáveis globais    
-    let numeroDaQuestaoAtual = 0
-    let pontuacaoFinal = 0
-    let tentativaIncorreta = 0
-    let certas = 0
-    let erradas = 0
-    let quantidadeDeQuestoes = listaDeQuestoes.length
-
-    function onloadEsconder() {
-        document.getElementById('pontuacao').style.display = "none"
-        document.getElementById('jogo').style.display = "none"
-    }
 
     function iniciarQuiz() {
-        document.getElementById('pontuacao').style.display = "flex"
-        document.getElementById('jogo').style.display = "flex"
-        document.getElementById('btnIniciarQuiz').style.display = "none"
 
-        document.getElementById('qtdQuestoes').innerHTML = quantidadeDeQuestoes
+       document.getElementById("btnFinalizar").style.display = "block"
 
-        preencherHTMLcomQuestaoAtual(0)
+        const quizContainer = document.getElementById("quizContainer")
 
-        btnSubmeter.disabled = false
-        btnProx.disabled = true
-        // btnConcluir.disabled = true
-        btnTentarNovamente.disabled = true
-    }
+        quizContainer.innerHTML = ""
 
-    function preencherHTMLcomQuestaoAtual(index) {
-        habilitarAlternativas(true)
-        const questaoAtual = listaDeQuestoes[index]
-        numeroDaQuestaoAtual = index
-        console.log("questaoAtual")
-        console.log(questaoAtual)
-        document.getElementById("spanNumeroDaQuestaoAtual").innerHTML = Number(index) + 1 // ajustando porque o index começa em 0
-        document.getElementById("spanQuestaoExibida").innerHTML = questaoAtual.pergunta;
-        document.getElementById("labelOpcaoUm").innerHTML = questaoAtual.alternativaA;
-        document.getElementById("labelOpcaoDois").innerHTML = questaoAtual.alternativaB;
-        document.getElementById("labelOpcaoTres").innerHTML = questaoAtual.alternativaC;
-        document.getElementById("labelOpcaoQuatro").innerHTML = questaoAtual.alternativaD;
-    }
+        listaDeQuestoes.forEach((questao, index) => {
 
-    function submeter() {
-        const options = document.getElementsByName("option"); // recupera alternativas no html
+            quizContainer.innerHTML += `
 
-        let hasChecked = false
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].checked) {
-                hasChecked = true
-                break
-            }
-        }
+        <div class="quiz-card">
 
-        if (!hasChecked) {
-            alert("Não há alternativas escolhidas. Escolha uma opção.")
-        } else {
-            btnSubmeter.disabled = true
-            btnProx.disabled = false
+            <h3>${index + 1}. ${questao.pergunta}</h3>
 
-            habilitarAlternativas(false)
+            <label class="quiz-alternativa">
+                <input type="radio" name="q${index}" value="alternativaA">
+                ${questao.alternativaA}
+            </label>
 
-            checarResposta()
-        }
-    }
+            <label class="quiz-alternativa">
+                <input type="radio" name="q${index}" value="alternativaB">
+                ${questao.alternativaB}
+            </label>
 
-    function habilitarAlternativas(trueOrFalse) {
-        let opcaoEscolhida = trueOrFalse ? false : true
+            <label class="quiz-alternativa">
+                <input type="radio" name="q${index}" value="alternativaC">
+                ${questao.alternativaC}
+            </label>
 
-        primeiraOpcao.disabled = opcaoEscolhida
-        segundaOpcao.disabled = opcaoEscolhida
-        terceiraOpcao.disabled = opcaoEscolhida
-        quartaOpcao.disabled = opcaoEscolhida
+            <label class="quiz-alternativa">
+                <input type="radio" name="q${index}" value="alternativaD">
+                ${questao.alternativaD}
+            </label>
 
-    }
+        </div>
 
-    function avancar() {
-        btnProx.disabled = true
-        btnSubmeter.disabled = false
-
-        desmarcarRadioButtons()
-
-        if (numeroDaQuestaoAtual < quantidadeDeQuestoes - 1) {
-            preencherHTMLcomQuestaoAtual(numeroDaQuestaoAtual)
-        } else if (numeroDaQuestaoAtual == quantidadeDeQuestoes - 1) {
-            alert("Atenção... a próxima é a ultima questão!")
-            preencherHTMLcomQuestaoAtual(numeroDaQuestaoAtual)
-        } else {
-            finalizarJogo()
-        }
-        limparCoresBackgroundOpcoes()
-    }
-
-    function tentarNovamente() {
-        // atualiza a página
-        window.location.reload()
-    }
-
-    function checarResposta() {
-        const questaoAtual = listaDeQuestoes[numeroDaQuestaoAtual] // questão atual 
-        const respostaQuestaoAtual = questaoAtual.alternativaCorreta // qual é a resposta correta da questão atual
-
-        const options = document.getElementsByName("option"); // recupera alternativas no html
-
-        let alternativaCorreta = null // variável para armazenar a alternativa correta
-
-        options.forEach((option) => {
-            if (option.value === respostaQuestaoAtual) {
-                console.log("alternativaCorreta está no componente: " + alternativaCorreta)
-                alternativaCorreta = option.labels[0].id
-            }
+        `
         })
 
-        // verifica se resposta assinalada é correta
-        options.forEach((option) => {
-            if (option.checked === true && option.value === respostaQuestaoAtual) {
-                document.getElementById(alternativaCorreta).classList.add("text-success-with-bg")
-                pontuacaoFinal++
-                certas++
-                document.getElementById("spanCertas").innerHTML = certas
-                numeroDaQuestaoAtual++
-            } else if (option.checked && option.value !== respostaQuestaoAtual) {
-                const wrongLabelId = option.labels[0].id
+    }
 
-                document.getElementById(wrongLabelId).classList.add("text-danger-with-bg")
-                document.getElementById(alternativaCorreta).classList.add("text-success-with-bg")
-                tentativaIncorreta++
-                erradas++
-                document.getElementById("spanErradas").innerHTML = erradas
-                numeroDaQuestaoAtual++
+    function finalizarQuiz() {
+
+        let acertos = 0
+        let erros = 0
+
+        listaDeQuestoes.forEach((questao, index) => {
+
+            const resposta = document.querySelector(`input[name="q${index}"]:checked`)
+
+            if (resposta) {
+
+                if (resposta.value == questao.alternativaCorreta) {
+                    acertos++
+                } else {
+                    erros++
+                }
+
             }
+
         })
-    }
 
-    function limparCoresBackgroundOpcoes() {
-        const options = document.getElementsByName("option");
-        options.forEach((option) => {
-            document.getElementById(option.labels[0].id).classList.remove("text-danger-with-bg")
-            document.getElementById(option.labels[0].id).classList.remove("text-success-with-bg")
-        })
-    }
+        const pontuacao = acertos
 
-    function desmarcarRadioButtons() {
-        const options = document.getElementsByName("option");
-        for (let i = 0; i < options.length; i++) {
-            options[i].checked = false;
-        }
-    }
+        alert(`
+Quiz finalizado!
 
-function finalizarJogo() {
-    let textoParaMensagemFinal = null
-    let classComCoresParaMensagemFinal = null
-    const porcentagemFinalDeAcertos = pontuacaoFinal / quantidadeDeQuestoes
-
-    if (porcentagemFinalDeAcertos <= 0.3) {
-        textoParaMensagemFinal = "Parece que você não estudou..."
-        classComCoresParaMensagemFinal = "text-danger-with-bg"
-    }
-    else if (porcentagemFinalDeAcertos > 0.3 && porcentagemFinalDeAcertos < 0.9) {
-        textoParaMensagemFinal = "Pode melhorar na próxima, hein!"
-        classComCoresParaMensagemFinal = "text-warning-with-bg"
-    }
-    else {
-        textoParaMensagemFinal = "Uau, parabéns!"
-        classComCoresParaMensagemFinal = "text-success-with-bg"
-    }
-
-    salvarResultado()
-
-    textoParaMensagemFinal += "<br> Você acertou " + Math.round((porcentagemFinalDeAcertos) * 100) + "% das questões."
-
-    document.getElementById('msgFinal').innerHTML = textoParaMensagemFinal
-    document.getElementById('msgFinal').classList.add(classComCoresParaMensagemFinal)
-    document.getElementById('spanPontuacaoFinal').innerHTML = pontuacaoFinal
-
-    btnProx.disabled = true
-    btnSubmeter.disabled = true
-    btnTentarNovamente.disabled = false
-}
-    function salvarResultado() {
-        const resultado = {
-            acertos: certas,
-            erros: erradas,
-            pontuacao: pontuacaoFinal
-        }
+Acertos: ${acertos}
+Erros: ${erros}
+Pontuação: ${pontuacao}
+`)
 
         fetch("/quiz/salvar", {
 
@@ -373,19 +219,16 @@ function finalizarJogo() {
             headers: {
                 "Content-Type": "application/json"
             },
+
             body: JSON.stringify({
-                acertos: certas,
-                erros: erradas,
-                pontuacao: pontuacaoFinal,
+                acertos: acertos,
+                erros: erros,
+                pontuacao: pontuacao,
                 idUsuario: sessionStorage.ID_USUARIO
             })
+
         })
-            .then(res => res.json())
-            .then(data => {
-                console.log("Resultado salvo:", data)
-            })
-            .catch(err => {
-                console.error("Erro ao salvar:", err)
-            })
+
     }
+
 </script>
