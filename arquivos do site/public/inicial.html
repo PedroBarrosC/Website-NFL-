@@ -34,20 +34,20 @@
     </div>
   </div>
 
-  <div class="banner">
+  <div class="bannerinicial">
     <div class="container">
       <p>O futebol Americano <span> na </span> minha <span> vida </span>.</p>
     </div>
   </div>
 
-  <div class="degrade"></div>
+  <div class="degradeinicial"></div>
 
-  <div class="social">
+  <div class="socialinicial">
     <div class="container">
       <div class="boxes">
 
         <div class="box">
-          <div class="imagembox"> <img src="assets/imgs/banner_categoria_home_960x835px.png"> </div>
+          <div class="imagembox"> <img src="assets/imgs/familia.jpg "> </div>
 
           <div class="textobox">
             <h4> O inicio </h4>
@@ -84,20 +84,46 @@
           <div class="textobox">
             <h4>O time </h4>
             <p>com o time e com o passar dos dias todos puderam ver minha evolução e que eu não estava ali só de
-            brincadeira, comecei a realmente pegar gosto por isso e me esforçar cada vez mais,
-            quando logo no primeiro jogo da temporada já estava como titular para essa posição, e no meu primeiro jogo
-            tive algumas oportunidades que com o passar do tempo foram crescendo,
-            e lembro da sensação que é entrar em campo para uma partida de futebol americano como se fose hoje. Muitas
-            vezes duvidei se isso era realmente para mim mas a cultara do futebol americano me fez uma pessoa mais
-            persistente e resiliente para qualquer coisa que vier pela frente, por isso foi a época mais importante da
-            minha vida.
-            
+              brincadeira, comecei a realmente pegar gosto por isso e me esforçar cada vez mais,
+              quando logo no primeiro jogo da temporada já estava como titular para essa posição, e no meu primeiro jogo
+              tive algumas oportunidades que com o passar do tempo foram crescendo,
+              e lembro da sensação que é entrar em campo para uma partida de futebol americano como se fose hoje. Muitas
+              vezes duvidei se isso era realmente para mim mas a cultara do futebol americano me fez uma pessoa mais
+              persistente e resiliente para qualquer coisa que vier pela frente, por isso foi a época mais importante da
+              minha vida.
+
 
             </p>
 
-
           </div>
         </div>
+
+      <div class="midia">
+    
+  <div class="carrossel">
+    <div class="slides">
+      <img src="assets/fotos/1c1dc35a-0c8f-450e-96ca-a7b3b1777890.jpeg">
+      <img src="assets/fotos/432394e9-302f-499b-87ce-537ce209d069.jpeg">
+      <img src="assets/fotos/471824C7-A010-4F70-B3BA-296F27ABB0CC.jpeg">
+      <img src="assets/fotos/57caeecf-a066-4844-8e88-a8835d040411.jpeg">
+      <img src="assets/fotos/8E63806D-3383-4D26-B372-315DAEE7DFE0.jpeg">
+      <img src="assets/fotos/bd1b75cb-a474-4b56-86a3-351ffa3eb535.jpeg">
+      <img src="assets/fotos/IMG_3160.jpeg">
+      <img src="assets/fotos/IMG_3176.jpeg">
+      <img src="assets/fotos/IMG_3291.jpeg">
+    </div>
+
+    <button class="esquerda">&#10094;</button>
+    <button class="direita">&#10095;</button>
+  </div>
+
+  <div id="videocard">
+    <video autoplay muted loop playsinline>
+      <source src="assets/video/video.mp4" type="video/mp4">
+    </video>
+  </div>
+
+</div>
 
       </div>
     </div>
@@ -111,6 +137,52 @@
       <span class="version">v1.0.0</span>
     </div>
   </div>
+
+
 </body>
 
 </html>
+
+<script>
+  const slides = document.querySelector('.slides');
+  const imagens = document.querySelectorAll('.slides img');
+  const btnEsq = document.querySelector('.esquerda');
+  const btnDir = document.querySelector('.direita');
+
+  let index = 0;
+
+  function mostrarSlide() {
+    slides.style.transform = `translateX(-${index * 100}%)`;
+  }
+
+  btnDir.addEventListener('click', () => {
+    index++;
+
+    if (index >= imagens.length) {
+      index = 0;
+    }
+
+    mostrarSlide();
+  });
+
+  btnEsq.addEventListener('click', () => {
+    index--;
+
+    if (index < 0) {
+      index = imagens.length - 1;
+    }
+
+    mostrarSlide();
+  });
+
+  setInterval(() => {
+    index++;
+
+    if (index >= imagens.length) {
+      index = 0;
+    }
+
+    mostrarSlide();
+  }, 3000);
+
+</script>

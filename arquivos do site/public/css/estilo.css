@@ -487,3 +487,268 @@ body {
 }
 
 
+/* estrelas */
+
+.bannerestrelas {
+  height: var(--tamanho-banner);
+  color: rgb(238, 229, 229);
+  background:  url('../assets/imgs/cywmfl7nku3adulwia4p.webp');
+  background-size: cover;
+  background-position: center;
+
+}
+
+.bannerestrelas .container  {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+ .container .bannerestrelas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+ .container p .bannerestrelas {
+  margin: 0;
+  padding: 0;
+  font-size: 30px;
+}
+
+ .container .titulobannertimes span .bannerestrelas {
+  font-weight: bold;
+
+}
+ .bannerestrelas .container p  {
+  margin: 0;
+  padding: 0;
+  font-size: 30px;
+}
+
+ .bannerestrelas .container .titulobannertimes span  {
+  font-weight: bold;
+}
+
+.degradeestrelas {
+  background: linear-gradient(#18253C);
+  height: 100px;
+}
+
+.socialestrelas {
+  background: linear-gradient(#18253c, rgb(184, 189, 199));
+  display: flex; }
+
+  .socialestrelas .container {
+  justify-content: center;
+}
+
+.socialestrelas .container .boxes {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  width: 100%;
+  padding: 30px 0;
+}
+
+.socialestrelas p {
+  text-align: center;
+}
+
+.reverse {
+  flex-direction:row-reverse;
+}
+
+/* bannerinicial*/
+
+.bannerinicial{
+  height: var(--tamanho-banner);
+  color: rgb(238, 229, 229);
+  background:  url('../assets/imgs/268a736d-ce7b-477a-931b-d1dc18adb741.jpeg');
+  background-size: cover;
+  background-position: center;
+
+}
+
+.bannerinicial .container  {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+ .container .bannerinicial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+ .container p .bannerinicial {
+  margin: 0;
+  padding: 0;
+  font-size: 30px;
+}
+
+ .container .titulobannertimes span .bannerinicial {
+  font-weight: bold;
+
+}
+ .bannerinicial .container p  {
+  margin: 0;
+  padding: 0;
+  font-size: 30px;
+}
+
+ .bannerinicial .container .titulobannertimes span  {
+  font-weight: bold;
+}
+
+.degradeinicial {
+  background: linear-gradient(#000000d0);
+  height: 100px;
+}
+
+.socialinicial {
+  background: linear-gradient(#000000d0, rgb(184, 189, 199));
+  display: flex; }
+
+  .socialinicial .container {
+  justify-content: center;
+}
+
+.socialinicial .container .boxes {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  width: 100%;
+  padding: 30px 0;
+}
+
+.socialinicial p {
+  text-align: center;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.carrossel {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+}
+
+.slides {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slides img {
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  object-fit: cover;
+  display: block;
+}
+
+.carrossel button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+
+
+.midia {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  margin-top: 40px;
+  margin-left: 80px;
+  justify-content: space-evenly;
+}
+
+#videocard video {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+}
+
+
+
+.carrossel {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+}
+
+.slides {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slides img {
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+#videocard video {
+  width: 300px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+}
+
+.carrossel button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 35px;
+  height: 35px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.esquerda {
+  left: 10px;
+}
+
+.direita {
+  right: 10px;
+}
