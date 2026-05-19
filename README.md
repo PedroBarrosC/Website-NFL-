@@ -17,13 +17,14 @@ Siga os passos abaixo para executar o projeto na sua máquina:
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/oasis-forever.git
+git clone https://github.com/PedroBarrosC/Website-NFL-.git
 ```
 
 ### 2. Acesse a pasta do projeto
 
 ```bash
-cd oasis-forever
+cd website-nfl
+cd arquivos do site 
 ```
 
 ### 3. Instale as dependências
@@ -55,7 +56,7 @@ npm run dev
 ## Estrutura do Projeto
 
 ```bash
-oasis-forever/
+arquivos do site/
 │
 ├── public/
 │   ├── assets/
@@ -75,5 +76,5 @@ oasis-forever/
 
 ## Autor
 
-Desenvolvido por Beatriz Mustafa Ferreira
+Desenvolvido por Pedro Barros Costa 
 
