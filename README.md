@@ -1,5 +1,9 @@
 # NFL WEBSITE
+# NFL Nation
 
+O NFL WEBSITE é uma aplicação web desenvolvida para fãs de futebol americano, com foco em compartilhar informações sobre a NFL, curiosidades, times e interação dos usuários através de quizzes e dashboards.
+
+O sistema combina uma interface dinâmica e interativa com uma estrutura de back-end organizada para armazenar dados dos usuários, resultados dos quizzes e estatísticas sobre os times favoritos da comunidade.
 
 ---
 
@@ -7,8 +11,23 @@
 
 * HTML5
 * CSS3
-* JavaScript (Node.js)
+* JavaScript
+* Node.js
+* Express
+* MySQL
+* Chart.js
+
 ---
+
+## Funcionalidades
+
+* Cadastro e login de usuários
+* Quiz sobre NFL
+* Dashboard com gráficos interativos
+* KPI's com estatísticas dos usuários
+* Exibição dos times favoritos dos usuários
+* Gráficos de desempenho no quiz
+
 
 ## Como rodar o projeto
 
