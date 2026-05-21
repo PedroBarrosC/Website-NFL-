@@ -18,6 +18,8 @@ var app = express();
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
 var timeRouter = require("./src/routes/times")
+var quizRouter = require("./src/routes/quizRoutes");
+var kpisRouter = require("./src/routes/kpis");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -28,10 +30,10 @@ app.use(cors());
 app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/times", timeRouter);
-
-var quizRouter = require("./src/routes/quizRoutes");
-
 app.use("/quiz", quizRouter);
+app.use("/kpis", kpisRouter);
+
+
 
 
 ;

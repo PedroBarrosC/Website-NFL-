@@ -19,4 +19,5 @@ router.get("/distribuicao", (req, res) => {
     quizController.buscarDistribuicao(req, res);
 });
 
+
 module.exports = router;

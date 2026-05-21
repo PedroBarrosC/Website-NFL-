@@ -249,6 +249,9 @@ body {
   justify-content: start;
   padding: 5px 0;
 }
+.campo input {
+  padding: 10px ;
+}
 
 .botao {
   cursor: pointer;
