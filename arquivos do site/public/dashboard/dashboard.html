@@ -29,6 +29,10 @@
             <div class="btn-logout" onclick="limparSessao()">
                 <h3>Sair</h3>
             </div>
+
+            <div class = "botao_voltar" onclick="voltarpagina()" >
+                <h3>Voltar</h3>
+            </div>          
         </div>
 
         <div class="dash">
@@ -101,7 +105,7 @@
                 label: "Quantidade de usuários por pontuação",
                 data: [],
                 borderColor: "#013369",
-                backgroundColor: "rgba(1, 51, 105, 0.2)",
+                backgroundColor: " #e6005a",
                 fill: true,
                 tension: 0.3
             }]
@@ -253,5 +257,9 @@ function obterKpis() {
             document.getElementById("kpi_ultima_pontuacao").innerHTML = resposta.ultima_pontuacao;
         })
         .catch(err => console.error("Erro kpis:", err));
+}
+
+function voltarpagina(){
+    location.href ="../inicial.html"
 }
 </script>
