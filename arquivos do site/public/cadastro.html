@@ -113,7 +113,7 @@
         fetch("/times/listar", {
             method: "GET"
         }).then(function (resposta) {
-            console.log("Estou no then do listar times...");
+            console.log("Estou no listar times");
 
             if (resposta.ok) {
                 resposta.json().then(function (times) {
@@ -130,7 +130,7 @@
                 console.log("Erro ao buscar times ");
             }
         }).catch(function (erro) {
-            console.log("Erro na requisição:", erro);
+            console.log("Erro :", erro);
         });
     }
   
