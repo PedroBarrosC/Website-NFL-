@@ -20,6 +20,7 @@ var usuarioRouter = require("./src/routes/usuarios");
 var timeRouter = require("./src/routes/times")
 var quizRouter = require("./src/routes/quizRoutes");
 var kpisRouter = require("./src/routes/kpis");
+var tabelaRouter = require("./src/routes/tabela");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -32,7 +33,7 @@ app.use("/usuarios", usuarioRouter);
 app.use("/times", timeRouter);
 app.use("/quiz", quizRouter);
 app.use("/kpis", kpisRouter);
-
+app.use("/tabela", tabelaRouter);
 
 
 

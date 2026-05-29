@@ -183,3 +183,34 @@ canvas {
   font-weight: bold;
   margin: 0;
 }
+.tabela_estilo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+#tabela {
+    width: 60%;
+    border-collapse: collapse;
+    background-color: #111;
+    color: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#tabela th {
+    background-color: #e6005a;
+    padding: 15px;
+    font-size: 18px;
+}
+
+#tabela td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #333;
+}
+
+#tabela tr:hover {
+    background-color: #1d1d1d;
+}

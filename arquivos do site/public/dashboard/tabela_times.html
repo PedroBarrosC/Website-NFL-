@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../assets/icon/OIP (1).jpg">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFL | Tabela Times</title>
+
+    <link rel="stylesheet" href="./../css/dashboards.css">
+    <link rel="stylesheet" href="./../css/estilo.css" />
+
+    <script src="../js/sessao.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div class="janela">
+        <div class="header-left">
+            <h1>NFL</h1>
+
+            <div class="hello">
+                <h3>Olá, <span id="b_usuario"></span>!</h3>
+            </div>
+
+            <div class="btn-logout" onclick="limparSessao()">
+                <h3>Sair</h3>
+            </div>
+
+            <div class="botao_voltar" onclick="voltarpagina()">
+                <h3>Voltar</h3>
+            </div>
+        </div>
+
+
+        <div class="dash">
+
+            <div id="kpis">
+
+                <div class="kpi">
+                    <h4>Time Mais Escolhido</h4>
+                    <p id="kpi_time_mais_escolhido"></p>
+                </div>
+
+                <div class="kpi">
+                    <h4>Pontuação Mais Tirada</h4>
+                    <p id="kpi_pontuacao_mais_tirada"></p>
+                </div>
+
+                <div class="kpi">
+                    <h4>Sua Última Pontuação</h4>
+                    <p id="kpi_ultima_pontuacao"></p>
+                </div>
+
+            </div>
+            <div class="tabela_estilo">
+                <table id="tabela">
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Time Escolhido</th>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+        <!--criando uma tabela, tr é uma linha o th é header e o td é os dados -->
+
+
+
+        <script>
+            window.onload = function () {
+
+                obterKpis();
+            }
+
+
+            function voltarpagina() {
+                location.href = "./dashboard.html"
+
+            }
+
+
+            function obterKpis() {
+                fetch("/kpis")
+                    .then(res => res.json())
+                    .then(resposta => {
+                        document.getElementById("kpi_time_mais_escolhido").innerHTML = resposta.time_mais_escolhido;
+                        document.getElementById("kpi_pontuacao_mais_tirada").innerHTML = resposta.pontuacao_mais_tirada;
+                        document.getElementById("kpi_ultima_pontuacao").innerHTML = resposta.ultima_pontuacao;
+                    })
+                    .catch(err => console.error("Erro kpis:", err));
+            }
+
+
+
+
+
+            // o fetch aqui está servindo para receber a função e criar os campos na tabela
+            fetch("/tabela/listar", {
+                method: "GET"
+            }).then(function (resposta) {
+                console.log("Estou no listar tabela");
+
+                if (resposta.ok) {
+                    resposta.json().then(function (usuarios) {
+                        tabela.innerHTML += "";
+
+                        for (let i = 0; i < usuarios.length; i++) {
+
+                            let usuario = usuarios[i]
+
+                            let tr = `<tr> <td> ${usuario.nome}</td> <td> ${usuario.nome_time} </td> </tr>`
+
+                            tabela.innerHTML += tr
+                        }
+                    });
+                } else {
+                    console.log("Erro ao buscar times ");
+                }
+            }).catch(function (erro) {
+                console.log("Erro :", erro);
+            });
+
+
+
+        </script>
