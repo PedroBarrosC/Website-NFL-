@@ -99,30 +99,39 @@
 
 
 
-            // o fetch aqui está servindo para receber a função e criar os campos na tabela
+
+            // Aqui eu faço uma requisição para pegar os dados da tabela que estão no banco.
+
             fetch("/tabela/listar", {
                 method: "GET"
             }).then(function (resposta) {
+
                 console.log("Estou no listar tabela");
 
+                // Verifico se a resposta deu certo.
                 if (resposta.ok) {
-                    resposta.json().then(function (usuarios) {
-                        tabela.innerHTML += "";
 
+                    resposta.json().then(function (usuarios) {
+
+                        // Percorro todos os usuários retornados.
                         for (let i = 0; i < usuarios.length; i++) {
 
-                            let usuario = usuarios[i]
+                            let usuario = usuarios[i];
 
-                            let tr = `<tr> <td> ${usuario.nome}</td> <td> ${usuario.nome_time} </td> </tr>`
+                            // Crio uma linha da tabela com o nome do usuário e seu time.
+                            let tr = `<tr> <td>${usuario.nome}</td> <td>${usuario.nome_time}</td> </tr>`;
 
-                            tabela.innerHTML += tr
+                            // Adiciono a linha na tabela.
+                            tabela.innerHTML += tr;
                         }
                     });
+
                 } else {
-                    console.log("Erro ao buscar times ");
+                    console.log("Erro ao buscar times");
                 }
+
             }).catch(function (erro) {
-                console.log("Erro :", erro);
+                console.log("Erro:", erro);
             });
 
 

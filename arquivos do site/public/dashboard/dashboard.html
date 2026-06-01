@@ -86,175 +86,190 @@
     }
 
 
-    // ================= QUIZ =================
+    
 
-    // 1. OBTER DADOS
-    function obterDadosQuiz() {
-        fetch("/quiz/distribuicao")
-            .then(res => res.json())
-            .then(resposta => {
-                plotarGraficoQuiz(resposta);
-            })
-            .catch(err => console.error(err));
-    }
+ // ================= QUIZ =================
 
-    // 2. PLOTAR
-    function plotarGraficoQuiz(resposta) {
+// Função que busca os dados da distribuição das pontuações do quiz.
+function obterDadosQuiz() {
+    fetch("/quiz/distribuicao")
+        .then(res => res.json())
+        .then(resposta => {
+            plotarGraficoQuiz(resposta);
+        })
+        .catch(err => console.error(err));
+}
 
-        let labels = [];
-        let dados = {
-            labels: labels,
-            datasets: [{
-                label: "Quantidade de usuários por pontuação",
-                data: [],
-                borderColor: "#013369",
-                backgroundColor: " #e6005a",
-                fill: true,
-                tension: 0.3
-            }]
-        };
+// Função responsável por criar o gráfico de barras.
+function plotarGraficoQuiz(resposta) {
 
-        resposta.forEach(item => {
-            labels.push(item.pontuacao);
-            dados.datasets[0].data.push(item.quantidade);
-        });
+    let labels = [];
+    let dados = {
+        labels: labels,
+        datasets: [{
+            label: "Quantidade de usuários por pontuação",
+            data: [],
+            borderColor: "#013369",
+            backgroundColor: "#e6005a",
+            fill: true,
+            tension: 0.3
+        }]
+    };
 
-        let myChart = new Chart(document.getElementById("graficoQuiz"), {
-            type: "bar",
-            data: dados,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true, // começa do 0
-                        ticks: {
-                            stepSize: 1, // de 1 em 1
-                            color: "white"
-                        },
-                        title: {
-                            display: true,
-                            text: "Quantidade de usuários",
-                            color: "white"
-                        }
+    // Percorro os dados recebidos e adiciono as informações ao gráfico.
+    resposta.forEach(item => {
+        labels.push(item.pontuacao);
+        dados.datasets[0].data.push(item.quantidade);
+    });
+
+    // Crio o gráfico utilizando a biblioteca Chart.js.
+    let myChart = new Chart(document.getElementById("graficoQuiz"), {
+        type: "bar",
+        data: dados,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1,
+                        color: "white"
                     },
-                    x: {
-                        ticks: { color: "white" },
-                        title: {
-                            display: true,
-                            text: "Pontuação",
-                            color: "white"
-                        }
+                    title: {
+                        display: true,
+                        text: "Quantidade de usuários",
+                        color: "white"
+                    }
+                },
+                x: {
+                    ticks: { color: "white" },
+                    title: {
+                        display: true,
+                        text: "Pontuação",
+                        color: "white"
                     }
                 }
             }
-        });
+        }
+    });
+
+    // Após 2 segundos, atualizo os dados do gráfico.
+    setTimeout(() => atualizarGraficoQuiz(dados, myChart), 2000);
+}
+
+// Função que atualiza os dados do gráfico sem precisar recarregar a página.
+function atualizarGraficoQuiz(dados, myChart) {
+
+    fetch("/quiz/distribuicao", { cache: 'no-store' })
+        .then(res => res.json())
+        .then(novoRegistro => {
+
+            // Limpo os dados antigos.
+            dados.labels = [];
+            dados.datasets[0].data = [];
+
+            // Adiciono os novos dados recebidos.
+            novoRegistro.forEach(item => {
+                dados.labels.push(item.pontuacao);
+                dados.datasets[0].data.push(item.quantidade);
+            });
+
+            // Atualizo o gráfico.
+            myChart.update();
+
+            // Repito a atualização a cada 2 segundos.
+            setTimeout(() => atualizarGraficoQuiz(dados, myChart), 2000);
+        })
+        .catch(err => console.error(err));
+}
 
 
-        setTimeout(() => atualizarGraficoQuiz(dados, myChart), 2000);
-    }
+// ================= TIMES =================
 
-    // 3. ATUALIZAR
-    function atualizarGraficoQuiz(dados, myChart) {
+// Busca os dados dos times escolhidos pelos usuários.
+function obterDadosTimes() {
+    fetch("/quiz/times-dados")
+        .then(res => res.json())
+        .then(resposta => {
+            plotarGraficoTimes(resposta);
+        })
+        .catch(err => console.error("Erro times:", err));
+}
 
-        fetch("/quiz/distribuicao", { cache: 'no-store' })
-            .then(res => res.json())
-            .then(novoRegistro => {
+// Cria o gráfico de pizza com os times.
+function plotarGraficoTimes(resposta) {
 
-                dados.labels = [];
-                dados.datasets[0].data = [];
+    if (!resposta || resposta.length == 0) return;
 
-                novoRegistro.forEach(item => {
-                    dados.labels.push(item.pontuacao);
-                    dados.datasets[0].data.push(item.quantidade);
-                });
+    let labels = [];
+    let dados = {
+        labels: labels,
+        datasets: [{
+            data: [],
+            backgroundColor: [
+                "#013369",
+                "#d50a0a",
+                "#ffffff",
+                "#888888",
+                "#00ffcc",
+                "#ffaa00"
+            ]
+        }]
+    };
 
-                myChart.update();
+    // Adiciono os nomes dos times e suas quantidades.
+    resposta.forEach(item => {
+        labels.push(item.nome_time);
+        dados.datasets[0].data.push(item.quantidade);
+    });
 
-                setTimeout(() => atualizarGraficoQuiz(dados, myChart), 2000);
-            })
-            .catch(err => console.error(err));
-    }
+    // Crio o gráfico de pizza.
+    let myChart = new Chart(document.getElementById("graficoTimes"), {
+        type: "pie",
+        data: dados
+    });
 
+    // Atualizo o gráfico a cada 2 segundos.
+    setTimeout(() => atualizarGraficoTimes(dados, myChart), 2000);
+}
 
+// Atualiza os dados do gráfico de times.
+function atualizarGraficoTimes(dados, myChart) {
 
-    // ================= TIMES =================
+    fetch("/quiz/times-dados", { cache: 'no-store' })
+        .then(res => res.json())
+        .then(novoRegistro => {
 
-    // 1. OBTER DADOS
-    function obterDadosTimes() {
-        fetch("/quiz/times-dados")
-            .then(res => res.json())
-            .then(resposta => {
-                plotarGraficoTimes(resposta);
-            })
-            .catch(err => console.error("Erro times:", err));
-    }
+            if (!novoRegistro || novoRegistro.length == 0) return;
 
-    // 2. PLOTAR
-    function plotarGraficoTimes(resposta) {
+            // Limpo os dados atuais.
+            dados.labels = [];
+            dados.datasets[0].data = [];
 
-        if (!resposta || resposta.length == 0) return;
+            // Adiciono os dados atualizados.
+            novoRegistro.forEach(item => {
+                dados.labels.push(item.nome_time);
+                dados.datasets[0].data.push(item.quantidade);
+            });
 
-        let labels = [];
-        let dados = {
-            labels: labels,
-            datasets: [{
-                data: [],
-                backgroundColor: [
-                    "#013369",
-                    "#d50a0a",
-                    "#ffffff",
-                    "#888888",
-                    "#00ffcc",
-                    "#ffaa00"
-                ]
-            }]
-        };
+            // Atualizo o gráfico.
+            myChart.update();
 
-        resposta.forEach(item => {
-            labels.push(item.nome_time);
-            dados.datasets[0].data.push(item.quantidade);
-        });
-
-        let myChart = new Chart(document.getElementById("graficoTimes"), {
-            type: "pie",
-            data: dados
-        });
-
-        setTimeout(() => atualizarGraficoTimes(dados, myChart), 2000);
-    }
-
-    // 3. ATUALIZAR
-    function atualizarGraficoTimes(dados, myChart) {
-
-        fetch("/quiz/times-dados", { cache: 'no-store' })
-            .then(res => res.json())
-            .then(novoRegistro => {
-
-                if (!novoRegistro || novoRegistro.length == 0) return;
-
-                dados.labels = [];
-                dados.datasets[0].data = [];
-
-                novoRegistro.forEach(item => {
-                    dados.labels.push(item.nome_time);
-                    dados.datasets[0].data.push(item.quantidade);
-                });
-
-                myChart.update();
-
-                setTimeout(() => atualizarGraficoTimes(dados, myChart), 2000);
-            })
-            .catch(err => console.error("Erro ao atualizar times:", err));
-    }
-
-    // ================= KPIs =================
+            // Continua atualizando a cada 2 segundos.
+            setTimeout(() => atualizarGraficoTimes(dados, myChart), 2000);
+        })
+        .catch(err => console.error("Erro ao atualizar times:", err));
+}
 
 
-    
+// ================= KPIs =================
 
+// Busca as informações das KPIs para exibir na tela.
 function obterKpis() {
     fetch("/kpis")
         .then(res => res.json())
         .then(resposta => {
+
+            // Exibo os dados recebidos nos respectivos elementos da página.
             document.getElementById("kpi_time_mais_escolhido").innerHTML = resposta.time_mais_escolhido;
             document.getElementById("kpi_pontuacao_mais_tirada").innerHTML = resposta.pontuacao_mais_tirada;
             document.getElementById("kpi_ultima_pontuacao").innerHTML = resposta.ultima_pontuacao;
@@ -262,10 +277,13 @@ function obterKpis() {
         .catch(err => console.error("Erro kpis:", err));
 }
 
-function voltarpagina(){
-    location.href ="../inicial.html"
+// Função para voltar para a página inicial.
+function voltarpagina() {
+    location.href = "../inicial.html";
 }
+
+// Função para acessar a página da tabela de times.
 function tabelaTimes() {
-    location.href = "./tabela_times.html"
+    location.href = "./tabela_times.html";
 }
 </script>
